@@ -15,21 +15,20 @@ try:
         if '/anime' in event.raw_text:
             search_result = gogo.get_search_results(event.raw_text[6:])
             try:
-                (names, ids) = format.format_search_results(search_result)   
+                (names, ids) = format.format_search_results(search_result)
                 buttons1 = []
                 for i in range(len(names)):
                     if len(names[i]) > 60:
-                        await bot.send_message(event.sender_id, 'Result Found but Telegram doesnt allow for buttons to have more than 64 letters(trying to find a fix)')
+                        await bot.send_message(event.sender_id, 'Result Found but Telegram doesnt allow for buttons to have more than 64 letters (trying to find a fix)')
                     else:
-                        buttons1.append([Button.inline(names[i], data= ids[i])])
+                        buttons1.append([Button.inline(names[i], data=ids[i])])
 
                 await bot.send_message(
-                        event.sender_id,
-                        'Search Results:',
-                        buttons=buttons1)
+                    event.sender_id,
+                    'Search Results:',
+                    buttons=buttons1)
             except:
-                    await bot.send_message(event.sender_id, 'Not Found')
-
+                await bot.send_message(event.sender_id, 'Not Found, Check for Typos or search Japanese name', file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif')
 
     async def send_details(event, id):
         search_details = gogo.get_anime_details(id)
@@ -41,17 +40,17 @@ try:
             else:
                 x = f'{x}{i}'
         await bot.send_message(
-                    event.sender_id,  
-                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
-                    file=search_details.get('image_url'),
-                    buttons=[Button.inline("Download", data=f"Download {id} {search_details.get('episodes')}")]
-                    )
+            event.sender_id,
+            f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+            file=search_details.get('image_url'),
+            buttons=[Button.inline(
+                "Download", data=f"Download {id} {search_details.get('episodes')}")]
+        )
 
     async def send_download_link(event, id, ep_num):
         links = gogo.get_episodes_link(animeid=id, episode_num=ep_num)
         result = format.format_download_results(links)
         await bot.send_message(event.sender_id, f"Download Links for episode {ep_num}\n{result}")
-
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
@@ -60,28 +59,84 @@ try:
             x = data.split()
             button2 = [[]]
             current_row = 0
-            if int(x[2]) <101:
+            if int(x[2]) < 101:
                 for i in range(int(x[2])):
-                    button2[current_row].append(Button.inline(str(i+1), data=f'ep{i+1}:{x[1]}'))
+                    button2[current_row].append(Button.inline(
+                        str(i+1), data=f'ep:{i+1}:{x[1]}'))
                     if (i+1) % 5 == 0:
                         button2.append([])
-                        current_row = current_row +1
+                        current_row = current_row + 1
                 await bot.send_message(
-                            event.sender_id, 
-                            f'Choose Episode:', 
-                            buttons=button2
-                            )
+                    event.sender_id,
+                    f'Choose Episode:',
+                    buttons=button2
+                )
             else:
-                pass  #Need to do something about 100+ episode anime
+                num_of_buttons = (int(x[2]) // 100)
+                for i in range(num_of_buttons):
+                    button2[current_row].append(Button.inline(
+                        f'{i}01 - {i+1}00', data=f'btz:{i+1}00:{x[1]}'))
+                    if (i+1) % 3 == 0:
+                        button2.append([])
+                        current_row = current_row + 1
+                if int(x[2]) % 100 == 0:
+                    pass
+                else:
+                    button2[current_row].append(Button.inline(
+                        f'{num_of_buttons}01 - {x[2]}', data=f'etz:{x[2]}:{x[1]}'))
+                await bot.send_message(
+                    event.sender_id,
+                    f'Choose Episode:',
+                    buttons=button2
+                )
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
-        try:
-            data = event.data.decode('utf-8')
+        data = event.data.decode('utf-8')
+        if 'btz:' in data:
             data_split = data.split(':')
-            await send_download_link(event, data_split[1], data_split[0][2:])
-        except:
-            pass
+            button3 = [[]]
+            current_row = 0
+            endnum = data_split[1]
+            startnum = int(f'{int(endnum[0])-1}01')
+            for i in range(startnum, (int(endnum)+1)):
+                button3[current_row].append(Button.inline(
+                    str(i), data=f'ep:{i}:{data_split[2]}'))
+                if i % 5 == 0:
+                    button3.append([])
+                    current_row = current_row + 1
+            await bot.send_message(
+                event.sender_id,
+                f'Choose Episode:',
+                buttons=button3
+            )
+        elif 'etz:' in data:
+            data_split = data.split(':')
+            button3 = [[]]
+            current_row = 0
+            endnum = int(data_split[1])
+            startnum = int(f'{endnum//100}01')
+            for i in range(startnum, (int(endnum)+1)):
+                button3[current_row].append(Button.inline(
+                    str(i), data=f'ep:{i}:{data_split[2]}'))
+                if i % 5 == 0:
+                    button3.append([])
+                    current_row = current_row + 1
+            await bot.send_message(
+                event.sender_id,
+                f'Choose Episode:',
+                buttons=button3
+            )
+
+    @bot.on(events.CallbackQuery)
+    async def callback(event):
+        data = event.data.decode('utf-8')
+        if 'ep:' in data:
+            try:
+                data_split = data.split(':')
+                await send_download_link(event, data_split[2], data_split[1])
+            except:
+                pass
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
@@ -94,7 +149,7 @@ try:
 
 except Exception as e:
     print(e)
-    
+
 
 bot.start()
 
