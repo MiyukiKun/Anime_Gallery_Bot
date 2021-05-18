@@ -19,6 +19,6 @@ def format_download_results(download_results):
         links.append(download_results.get(i))
     result = ''
     for i in range(len(links)):
-        result = f'{result}[{qualitys[i]}]({links[i]}])\n'
+        result = f'{result}[{qualitys[i]}]({links[i]})\n'
 
     return result
