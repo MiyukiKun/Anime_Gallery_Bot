@@ -12,7 +12,6 @@ def format_search_results(search_results):
 
 def format_download_results(download_results):
     qualitys = list(download_results)
-    qualitys.pop(0)
     links = []
     for i in qualitys:
         links.append(download_results.get(i))
