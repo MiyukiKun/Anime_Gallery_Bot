@@ -11,8 +11,24 @@ bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 try:
     @bot.on(events.NewMessage)
+    async def start_event(event):
+        if '/start' in event.raw_text:
+            await bot.send_message(
+                event.sender_id,
+                'This is a bot that can get links for any anime that is avilable on gogoanime\nUse /anime <Name of anime> to start using this bot\n\n\n*Note: This Bot is still under devlopment if u find any issues, bugs or suggestions contact @President_Shirogane',
+                file='https://media.giphy.com/media/b7l5cvG94cqo8/giphy.gif'
+            )
+    
+    @bot.on(events.NewMessage)
     async def event_handler(event):
-        if '/anime' in event.raw_text:
+        if '/anime' == event.raw_text:
+            await bot.send_message(
+                event.sender_id,
+                'Command must be used like this\n/anime <name of anime>\nexample: /anime One Piece',
+                file='https://media1.tenor.com/images/eaac56a1d02536ed416b5a080fdf73ba/tenor.gif?itemid=15075442'
+            )
+                
+        elif '/anime' in event.raw_text:
             search_result = gogo.get_search_results(event.raw_text[6:])
             try:
                 (names, ids) = format.format_search_results(search_result)
