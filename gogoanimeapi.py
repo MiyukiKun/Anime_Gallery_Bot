@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 class gogoanime():
-    def __init__(self, query, animeid, episode_num, genre_name, page):  # Intialises the anime class
+    def __init__(self, query, animeid, episode_num, genre_name, page):
         self.query = query
         self.animeid = animeid
         self.episode_num = episode_num
@@ -18,9 +18,8 @@ class gogoanime():
             response_html = response.text
             soup = BeautifulSoup(response_html, 'html.parser')
             animes = soup.find("ul", {"class": "items"}).find_all("li")
-            # print(animes)
             res_list_search = []
-            for anime in animes:  # For every anime found
+            for anime in animes:
                 tit = anime.a["title"]
                 urll = anime.a["href"]
                 r = urll.split('/')
@@ -48,7 +47,7 @@ class gogoanime():
             sum = ""
             plot_summary = sum.join(pl)
             type_of_show = lis[0].a['title']
-            ai = lis[2].find_all('a')  # .find_all('title')
+            ai = lis[2].find_all('a')
             genres = []
             for link in ai:
                 genres.append(link.get('title'))
@@ -87,89 +86,31 @@ class gogoanime():
             soup = BeautifulSoup(plainText, "lxml")
             source_url = soup.find("li", {"class": "dowloads"}).a
             vidstream_link = source_url.get('href')
-            # print(vidstream_link)
             URL = vidstream_link
             dowCode = requests.get(URL)
             data = dowCode.text
             soup = BeautifulSoup(data, "lxml")
-            dow_url1 = soup.findAll('div', {'class': 'dowload'})[0].find('a')
-            dow_url2 = soup.findAll('div', {'class': 'dowload'})[1].find('a')
-            dow_url3 = soup.findAll('div', {'class': 'dowload'})[2].find('a')
-            dow_url4 = soup.findAll('div', {'class': 'dowload'})[3].find('a')
-            dow_url5 = soup.findAll('div', {'class': 'dowload'})[4].find('a')
-            try:
-                dow_url6 = soup.findAll('div', {'class': 'dowload'})[5].find('a')
-            except:
-                pass
-            try:
-                dow_url7 = soup.findAll('div', {'class': 'dowload'})[6].find('a')
-            except:
-                pass
 
+            dow_url = []
+            for i in range(11):
+                try:
+                    dow_url.append(soup.findAll('div', {'class': 'dowload'})[i].find('a'))
+                except:
+                    pass
 
-            downlink1 = dow_url1.get('href')
-            downlink2 = dow_url2.get('href')
-            downlink3 = dow_url3.get('href')
-            downlink4 = dow_url4.get('href')
-            downlink5 = dow_url5.get('href')
-            try:
-                downlink6 = dow_url6.get('href')
-            except:
-                pass
-            try:
-                downlink7 = dow_url7.get('href')
-            except:
-                pass    
+            downloadlink = []
+            qualityname = []
+            for i in range(len(dow_url)):
+                downloadlink.append(dow_url[i].get('href'))
+                string = dow_url[i].string
+                string_spl = string.split()
+                string_spl.remove(string_spl[0])
+                string_original = ''
+                qualityname.append(string_original.join(string_spl))
+            episode_res_link = {}
+            for i in range(len(qualityname)):
+                episode_res_link[qualityname[i]] = downloadlink[i]
 
-            str1 = dow_url1.string
-            str_spl1 = str1.split()
-            str_spl1.remove(str_spl1[0])
-            str_original_1 = ""
-            quality_name1 = str_original_1.join(str_spl1)
-
-            str2 = dow_url2.string
-            str_spl2 = str2.split()
-            str_spl2.remove(str_spl2[0])
-            str_original_2 = ""
-            quality_name2 = str_original_2.join(str_spl2)
-
-            str3 = dow_url3.string
-            str_spl3 = str3.split()
-            str_spl3.remove(str_spl3[0])
-            str_original_3 = ""
-            quality_name3 = str_original_3.join(str_spl3)
-
-            str4 = dow_url4.string
-            str_spl4 = str4.split()
-            str_spl4.remove(str_spl4[0])
-            str_original_4 = ""
-            quality_name4 = str_original_4.join(str_spl4)
-
-            str5 = dow_url5.string
-            str_spl5 = str5.split()
-            str_spl5.remove(str_spl5[0])
-            str_original_5 = ""
-            quality_name5 = str_original_5.join(str_spl5)
-            try:
-                str6 = dow_url6.string
-                str_spl6 = str6.split()
-                str_spl6.remove(str_spl6[0])
-                str_original_6 = ""
-                quality_name6 = str_original_6.join(str_spl6)
-            except:
-                pass
-            try:
-                str7 = dow_url7.string
-                str_spl7 = str7.split()
-                str_spl7.remove(str_spl7[0])
-                str_original_7 = ""
-                quality_name7 = str_original_7.join(str_spl7)
-            except:
-                pass
-            try:
-                episode_res_link = {'title':f"{tit_url}", f"{quality_name1}":f"{downlink1}", f"{quality_name2}":f"{downlink2}", f"{quality_name3}":f"{downlink3}", f"{quality_name4}":f"{downlink4}", f"{quality_name5}":f"{downlink5}", f"{quality_name6}":f"{downlink6}", f"{quality_name7}":f"{downlink7}"}
-            except:
-                episode_res_link = {'title':f"{tit_url}", f"{quality_name1}":f"{downlink1}", f"{quality_name2}":f"{downlink2}", f"{quality_name3}":f"{downlink3}", f"{quality_name4}":f"{downlink4}", f"{quality_name5}":f"{downlink5}"}
             return episode_res_link
 
         except AttributeError:
@@ -186,7 +127,7 @@ class gogoanime():
             animes = soup.find("ul", {"class": "items"}).find_all("li")
             gen_ani_res = [{"genre":f"{genre_name}"}]
             gen_ani = []
-            for anime in animes:  # For every anime found
+            for anime in animes:
                 tits = anime.a["title"]
                 urll = anime.a["href"]
                 r = urll.split('/')
@@ -197,3 +138,24 @@ class gogoanime():
             return {"status":"400", "reason":"Invalid genre_name or page_num"}
         except requests.exceptions.ConnectionError:
             return {"status": "404", "reason": "Check the host's network Connection"}
+    
+    def get_home_page():
+        try:
+            url = 'https://gogoanime.ai'
+            session = HTMLSession()
+            response = session.get(url)
+            response_html = response.text
+
+            soup = BeautifulSoup(response_html, 'lxml')
+            res_list_search =[]
+            animes =  soup.find("ul", {"class": "items"}).find_all("li")
+            for anime in animes:
+                tit = anime.a["title"]
+                urll = anime.a["href"]
+                res_list_search.append({"name":f"{tit}","Id-Epnum":f"{urll[1:]}"})
+            if res_list_search == []:
+                return {"status":"204", "reason":"I have No Idea what the fuck went wrong"}
+            else:
+                return res_list_search
+        except requests.exceptions.ConnectionError:
+            return {"status":"404", "reason":"Check the host's network Connection"}
