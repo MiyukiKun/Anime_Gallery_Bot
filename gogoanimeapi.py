@@ -154,7 +154,7 @@ class gogoanime():
                 urll = anime.a["href"]
                 res_list_search.append({"name":f"{tit}","Id-Epnum":f"{urll[1:]}"})
             if res_list_search == []:
-                return {"status":"204", "reason":"I have No Idea what the fuck went wrong"}
+                return {"status":"69420", "reason":"I have No Idea what the fuck went wrong"}
             else:
                 return res_list_search
         except requests.exceptions.ConnectionError:
