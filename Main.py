@@ -10,6 +10,33 @@ bot_token = os.environ.get('BOT_TOKEN')
 bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 try:
+
+    @bot.on(events.NewMessage)
+    async def get_latest(event):
+        if '/latest' in event.raw_text:
+            home_page = gogo.get_home_page()
+            (names, ids, epnums) = format.format_home_results(home_page)
+            buttonss = []
+            for i in range(len(names)):
+                try:
+                    buttonss.append([Button.inline(names[i], data=f"lt:{ids[i]}")])           
+                except:
+                    pass
+            await bot.send_message(
+                event.sender_id,
+                'Latest anime added:',
+                buttons=buttonss
+            )
+
+    @bot.on(events.CallbackQuery)
+    async def callback(event):
+        data = event.data.decode('utf-8')
+        if 'lt:' in data:
+            split_data = data.split(":")
+            animeid = split_data[-1]
+            await send_details(event, animeid)
+
+
     @bot.on(events.NewMessage)
     async def start_event(event):
         if '/start' in event.raw_text:
@@ -18,7 +45,7 @@ try:
                 'This is a bot that can get links for any anime that is avilable on gogoanime\nUse /anime <Name of anime> to start using this bot\n\n\n*Note: This Bot is still under devlopment if u find any issues, bugs or suggestions contact @President_Shirogane',
                 file='https://media.giphy.com/media/b7l5cvG94cqo8/giphy.gif'
             )
-    
+
     @bot.on(events.NewMessage)
     async def event_handler(event):
         if '/anime' == event.raw_text:
@@ -27,7 +54,7 @@ try:
                 'Command must be used like this\n/anime <name of anime>\nexample: /anime One Piece',
                 file='https://media1.tenor.com/images/eaac56a1d02536ed416b5a080fdf73ba/tenor.gif?itemid=15075442'
             )
-                
+
         elif '/anime' in event.raw_text:
             search_result = gogo.get_search_results(event.raw_text[6:])
             try:
@@ -55,6 +82,7 @@ try:
                 pass
             else:
                 x = f'{x}{i}'
+        await event.edit('Search Results:')
         await bot.send_message(
             event.sender_id,
             f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
@@ -82,8 +110,7 @@ try:
                     if (i+1) % 5 == 0:
                         button2.append([])
                         current_row = current_row + 1
-                await bot.send_message(
-                    event.sender_id,
+                await event.edit(
                     f'Choose Episode:',
                     buttons=button2
                 )
@@ -100,8 +127,7 @@ try:
                 else:
                     button2[current_row].append(Button.inline(
                         f'{num_of_buttons}01 - {x[2]}', data=f'etz:{x[2]}:{x[1]}'))
-                await bot.send_message(
-                    event.sender_id,
+                await event.edit(
                     f'Choose Episode:',
                     buttons=button2
                 )
@@ -121,8 +147,7 @@ try:
                 if i % 5 == 0:
                     button3.append([])
                     current_row = current_row + 1
-            await bot.send_message(
-                event.sender_id,
+            await event.edit(
                 f'Choose Episode:',
                 buttons=button3
             )
@@ -138,8 +163,7 @@ try:
                 if i % 5 == 0:
                     button3.append([])
                     current_row = current_row + 1
-            await bot.send_message(
-                event.sender_id,
+            await event.edit(
                 f'Choose Episode:',
                 buttons=button3
             )
