@@ -10,7 +10,6 @@ bot_token = os.environ.get('BOT_TOKEN')
 bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 try:
-
     @bot.on(events.NewMessage)
     async def get_latest(event):
         if '/latest' in event.raw_text:
@@ -19,7 +18,8 @@ try:
             buttonss = []
             for i in range(len(names)):
                 try:
-                    buttonss.append([Button.inline(names[i], data=f"lt:{ids[i]}")])           
+                    buttonss.append(
+                        [Button.inline(names[i], data=f"lt:{ids[i]}")])
                 except:
                     pass
             await bot.send_message(
@@ -35,7 +35,6 @@ try:
             split_data = data.split(":")
             animeid = split_data[-1]
             await send_details(event, animeid)
-
 
     @bot.on(events.NewMessage)
     async def start_event(event):
@@ -56,24 +55,45 @@ try:
             )
 
         elif '/anime' in event.raw_text:
-            search_result = gogo.get_search_results(event.raw_text[6:])
+            search_result = gogo.get_search_results(event.raw_text[7:])
             try:
                 (names, ids) = format.format_search_results(search_result)
                 buttons1 = []
                 for i in range(len(names)):
-                    if len(names[i]) > 60:
-                        await bot.send_message(event.sender_id, 'Result Found but Telegram doesnt allow for buttons to have more than 64 letters (trying to find a fix)')
+                    if len(names[i]) > 55:
+                        try:
+                            buttons1.append([Button.inline(
+                                f"{names[i][:22]}. . .{names[i][-22:]}", data=f"split:{event.raw_text[7:]}:{ids[i][-25:]}")])
+                        except:
+                            bot.send_message(
+                                event.sender_id,
+                                "Name u searched for is too long",
+                                file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif'
+                            )
                     else:
                         buttons1.append([Button.inline(names[i], data=ids[i])])
-
+                        
                 await bot.send_message(
                     event.sender_id,
                     'Search Results:',
                     buttons=buttons1)
             except:
-                await bot.send_message(event.sender_id, 'Not Found, Check for Typos or search Japanese name', file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif')
+                await bot.send_message(
+                    event.sender_id,
+                    'Not Found, Check for Typos or search Japanese name',
+                    file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif'
+                )
 
     async def send_details(event, id):
+        if 'split:' in id:
+            split_id = id.split(":")
+            x = gogo.get_search_results(split_id[1])
+            (names, ids) = format.format_search_results(x)
+            for i in ids:
+                if i[-25:] == split_id[2]:
+                    id = i
+                    break
+
         search_details = gogo.get_anime_details(id)
         genre = search_details.get('genre')
         x = ''
@@ -83,24 +103,36 @@ try:
             else:
                 x = f'{x}{i}'
         await event.edit('Search Results:')
-        await bot.send_message(
-            event.sender_id,
-            f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
-            file=search_details.get('image_url'),
-            buttons=[Button.inline(
-                "Download", data=f"Download {id} {search_details.get('episodes')}")]
-        )
+        try:
+            await bot.send_message(
+                event.sender_id,
+                f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                file=search_details.get('image_url'),
+                buttons=[Button.inline(
+                    "Download", data=f"Download:{id}:{search_details.get('episodes')}")]
+            )
+        except:
+            await bot.send_message(
+                event.sender_id,
+                f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                file=search_details.get('image_url'),
+                buttons=[Button.inline(
+                    "Download", data=f"longdl:{split_id[1]}:{id[-25:]}:{search_details.get('episodes')}")]
+            )
 
     async def send_download_link(event, id, ep_num):
         links = gogo.get_episodes_link(animeid=id, episode_num=ep_num)
         result = format.format_download_results(links)
-        await bot.send_message(event.sender_id, f"Download Links for episode {ep_num}\n{result}")
+        await bot.send_message(
+            event.sender_id,
+            f"Download Links for episode {ep_num}\n{result}"
+        )
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
         data = event.data.decode('utf-8')
         if 'Download' in data:
-            x = data.split()
+            x = data.split(":")
             button2 = [[]]
             current_row = 0
             if int(x[2]) < 101:
@@ -131,6 +163,26 @@ try:
                     f'Choose Episode:',
                     buttons=button2
                 )
+        elif 'longdl:' in data:
+            x = data.split(":")
+            button2 = [[]]
+            current_row = 0
+            search_results = gogo.get_search_results(x[1])
+            (names, ids) = format.format_search_results(search_results)
+            for i in ids:
+                if i[-25:] == x[2]:
+                    id = i
+                    break
+            for i in range(int(x[3])):
+                button2[current_row].append(Button.inline(
+                    str(i+1), data=f'spp:{i+1}:{x[2]}:{x[1]}'))
+                if (i+1) % 5 == 0:
+                    button2.append([])
+                    current_row = current_row + 1
+            await event.edit(
+                f'Choose Episode:',
+                buttons=button2
+            )
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
@@ -177,6 +229,15 @@ try:
                 await send_download_link(event, data_split[2], data_split[1])
             except:
                 pass
+        elif 'spp:' in data:
+            x = data.split(":")
+            search_results = gogo.get_search_results(x[3])
+            (names, ids) = format.format_search_results(search_results)
+            for i in ids:
+                if i[-25:] == x[2]:
+                    id = i
+                    break
+            await send_download_link(event, id, x[1])
 
     @bot.on(events.CallbackQuery)
     async def callback(event):
