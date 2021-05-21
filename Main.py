@@ -141,10 +141,13 @@ try:
                 if (i+1) % 5 == 0:
                     button2.append([])
                     current_row = current_row + 1
-            await event.edit(
-                f'Choose Episode:',
-                buttons=button2
-            )
+            try:
+                await event.edit(
+                    f'Choose Episode:',
+                    buttons=button2
+                )
+            except:
+                pass
     
         elif 'btz:' in data:
             data_split = data.split(':')
