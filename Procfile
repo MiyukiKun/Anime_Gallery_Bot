@@ -1,1 +1,1 @@
-worker: python -m AnimeGalleryBot.py
+worker: python -m AnimeGalleryBot
