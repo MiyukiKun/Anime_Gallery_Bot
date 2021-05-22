@@ -54,11 +54,11 @@ try:
 
     @bot.on(events.CallbackQuery(pattern=b"split:"))
     async def _(e):
-        await call.callback_for_details(e)
+        await call.callback_for_details_long(e)
 
     @bot.on(events.CallbackQuery(pattern=b"dets:"))
     async def _(e):
-        await call.callback_for_details_long(e)
+        await call.callback_for_details(e)
 
 except Exception as e:
     print(e)
