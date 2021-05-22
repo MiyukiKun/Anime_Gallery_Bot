@@ -1,5 +1,5 @@
 from AnimeGalleryBot import tg_client as bot
-from telethon import events, Button
+from telethon import Button
 from AnimeGalleryBot.gogoanimeapi import gogoanime as gogo
 from AnimeGalleryBot.helper_functions import *
 
@@ -65,71 +65,6 @@ async def callback_for_download_long(event):
         buttons=button2
     )
 
-    @bot.on(events.CallbackQuery)
-    async def callback_for_choosebuttons(event):
-        data = event.data.decode('utf-8')
-        if 'btz:' in data:
-            data_split = data.split(':')
-            button3 = [[]]
-            current_row = 0
-            endnum = data_split[1]
-            startnum = int(f'{int(endnum[0])-1}01')
-            for i in range(startnum, (int(endnum)+1)):
-                button3[current_row].append(Button.inline(
-                    str(i), data=f'ep:{i}:{data_split[2]}'))
-                if i % 5 == 0:
-                    button3.append([])
-                    current_row = current_row + 1
-            await event.edit(
-                f'Choose Episode:',
-                buttons=button3
-            )
-
-        elif 'etz:' in data:
-            data_split = data.split(':')
-            button3 = [[]]
-            current_row = 0
-            endnum = int(data_split[1])
-            startnum = int(f'{endnum//100}01')
-            for i in range(startnum, (int(endnum)+1)):
-                button3[current_row].append(Button.inline(
-                    str(i), data=f'ep:{i}:{data_split[2]}'))
-                if i % 5 == 0:
-                    button3.append([])
-                    current_row = current_row + 1
-            await event.edit(
-                f'Choose Episode:',
-                buttons=button3
-            )
-
-    @bot.on(events.CallbackQuery)
-    async def callback_for_downlink(event):
-        data = event.data.decode('utf-8')
-        if 'ep:' in data:
-            try:
-                data_split = data.split(':')
-                await send_download_link(event, data_split[2], data_split[1])
-            except:
-                pass
-        elif 'spp:' in data:
-            x = data.split(":")
-            search_results = gogo.get_search_results(x[3])
-            (names, ids) = format.format_search_results(search_results)
-            for i in ids:
-                if i[-25:] == x[2]:
-                    id = i
-                    break
-            await send_download_link(event, id, x[1])
-
-    @bot.on(events.CallbackQuery)
-    async def callback_for_details(event):
-        data = event.data.decode('utf-8')
-        if 'dets:' in data:
-            x = data.split(":")
-            await send_details(event, x[1])
-
-        elif 'split:' in data:
-            await send_details(event, data)
 
 async def callback_for_choosebuttons(event):
     data = event.data.decode('utf-8')
