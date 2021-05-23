@@ -88,6 +88,24 @@ try:
             event.sender_id,
             '[Source Code On Github](https://github.com/MiyukiKun/Anime_Gallery_Bot)\nThis bot was hosted on Heroku'
         )
+        
+    @bot.on(events.NewMessage(pattern="/batch"))
+    async def event_handler_batch(event):
+        try:
+            data = event.raw_text[7:]
+            split_data = data.split(":")
+            if int(split_data[2]) - int(split_data[1]) > 15:
+                await event.reply(
+                    "Batch Download is capped at 15 episodes due to performance issues\nPlease download in batches of less than 15 for now"
+                )
+
+            else:
+                for i in range(int(split_data[1]), (int(split_data[2]) + 1)):
+                    if await send_download_link(event, split_data[0], i) == False:
+                        break
+
+        except:
+            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")
 
     @bot.on(events.CallbackQuery(pattern=b"lt:"))
     async def callback_for_latest(event):
@@ -251,7 +269,7 @@ try:
             try:
                 await bot.send_message(
                     event.sender_id,
-                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
                         "Download", data=f"Download:{id}:{search_details.get('episodes')}")]
@@ -259,7 +277,7 @@ try:
             except:
                 await bot.send_message(
                     event.sender_id,
-                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     buttons=[Button.inline(
                         "Download", data=f"Download:{id}:{search_details.get('episodes')}")]
                 )
@@ -268,7 +286,7 @@ try:
             try:
                 await bot.send_message(
                     event.sender_id,
-                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
                         "Download", data=f"longdl:{split_id[1]}:{id[-25:]}:{search_details.get('episodes')}")]
@@ -276,7 +294,7 @@ try:
             except:
                 await bot.send_message(
                     event.sender_id,
-                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}",
+                    f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
                         "Download", data=f"longdl:{split_id[1]}:{id[-25:]}:{search_details.get('episodes')}")]
@@ -285,10 +303,14 @@ try:
     async def send_download_link(event, id, ep_num):
         links = gogo.get_episodes_link(animeid=id, episode_num=ep_num)
         result = format.format_download_results(links)
-        await bot.send_message(
-            event.sender_id,
-            f"Download Links for episode {ep_num}\n{result}"
-        )
+        if "status" in result:
+            return False
+        else:
+            await bot.send_message(
+                event.sender_id,
+                f"Download Links for episode {ep_num}\n{result}"
+            )
+        return True
 
 except Exception as e:
     print(e)
