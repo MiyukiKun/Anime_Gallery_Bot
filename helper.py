@@ -4,7 +4,11 @@ Use /help to know commands and how to use this bot'''
 
 help_text = '''List of commands:
 /anime <name of anime you want> : to download any anime by search
+
 /latest : to get list of latest episodes released
+
+/batch <animeid>:<from episode>:<to episode> : For getting download links in bulk
+
 /source : You can see the source code and more information of the bot if u want
                 
                 
