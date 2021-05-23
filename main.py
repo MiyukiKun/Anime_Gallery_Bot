@@ -11,6 +11,7 @@ bot_token = os.environ.get('BOT_TOKEN')
 bot = TelegramClient('bot1', api_id, api_hash).start(bot_token=bot_token)
 
 try:
+    
     @bot.on(events.NewMessage(pattern="/start"))
     async def event_handler_start(event):
         await bot.send_message(
@@ -88,7 +89,7 @@ try:
             event.sender_id,
             '[Source Code On Github](https://github.com/MiyukiKun/Anime_Gallery_Bot)\nThis bot was hosted on Heroku'
         )
-        
+    
     @bot.on(events.NewMessage(pattern="/batch"))
     async def event_handler_batch(event):
         try:
@@ -128,7 +129,6 @@ try:
                     button2.append([])
                     current_row = current_row + 1
             await event.edit(
-                f'Choose Episode:',
                 buttons=button2
             )
         else:
@@ -145,7 +145,6 @@ try:
                 button2[current_row].append(Button.inline(
                     f'{num_of_buttons}01 - {x[2]}', data=f'etz:{x[2]}:{x[1]}'))
             await event.edit(
-                f'Choose Episode:',
                 buttons=button2
             )
 
@@ -187,7 +186,6 @@ try:
                 button3.append([])
                 current_row = current_row + 1
         await event.edit(
-            f'Choose Episode:',
             buttons=button3
         )
 
@@ -206,7 +204,6 @@ try:
                 button3.append([])
                 current_row = current_row + 1
         await event.edit(
-            f'Choose Episode:',
             buttons=button3
         )
 
@@ -241,10 +238,6 @@ try:
     async def callback_for_details_long(event):
         data = event.data.decode('utf-8')
         await send_details(event, data)
-
-    @bot.on(events.CallbackQuery)
-    async def test(event):
-        print(event.data)
 
     async def send_details(event, id):
         if 'split:' in id:
