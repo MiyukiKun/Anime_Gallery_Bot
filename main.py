@@ -10,12 +10,12 @@ bot_token = os.environ.get('BOT_TOKEN')
 
 bot = TelegramClient('bot1', api_id, api_hash).start(bot_token=bot_token)
 
-try:
+try:    # Anime Section
     
     @bot.on(events.NewMessage(pattern="/start"))
     async def event_handler_start(event):
         await bot.send_message(
-            event.sender_id,
+            event.chat_id,
             start_text,
             file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249'
         )
@@ -23,7 +23,7 @@ try:
     @bot.on(events.NewMessage(pattern="/help"))
     async def event_handler_help(event):
         await bot.send_message(
-            event.sender_id,
+            event.chat_id,
             help_text
             )
 
@@ -39,7 +39,7 @@ try:
             except:
                 pass
         await bot.send_message(
-            event.sender_id,
+            event.chat_id,
             'Latest anime added:',
             buttons=buttonss
             )
@@ -48,12 +48,15 @@ try:
     async def event_handler_anime(event):
         if '/anime' == event.raw_text:
             await bot.send_message(
-                event.sender_id,
+                event.chat_id,
                 'Command must be used like this\n/anime <name of anime>\nexample: /anime One Piece',
                 file='https://media1.tenor.com/images/eaac56a1d02536ed416b5a080fdf73ba/tenor.gif?itemid=15075442'
             )
         elif '/anime' in event.raw_text:
-            search_result = gogo.get_search_results(event.raw_text[7:])
+            text = event.raw_text.split()
+            text.pop(0)
+            anime_name = " ".join(text)
+            search_result = gogo.get_search_results(anime_name)
             try:
                 (names, ids) = format.format_search_results(search_result)
                 buttons1 = []
@@ -61,10 +64,10 @@ try:
                     if len(names[i]) > 55:
                         try:
                             buttons1.append([Button.inline(
-                                f"{names[i][:22]}. . .{names[i][-22:]}", data=f"split:{event.raw_text[7:]}:{ids[i][-25:]}")])
+                                f"{names[i][:22]}. . .{names[i][-22:]}", data=f"split:{anime_name}:{ids[i][-25:]}")])
                         except:
                             bot.send_message(
-                                event.sender_id,
+                                event.chat_id,
                                 "Name u searched for is too long",
                                 file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif'
                             )
@@ -73,12 +76,12 @@ try:
                             [Button.inline(names[i], data=f"dets:{ids[i]}")])
 
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     'Search Results:',
                     buttons=buttons1)
             except:
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     'Not Found, Check for Typos or search Japanese name',
                     file='https://media.giphy.com/media/4pk6ba2LUEMi4/giphy.gif'
                 )
@@ -86,15 +89,20 @@ try:
     @bot.on(events.NewMessage(pattern="/source"))
     async def event_handler_source(event):
         await bot.send_message(
-            event.sender_id,
+            event.chat_id,
             '[Source Code On Github](https://github.com/MiyukiKun/Anime_Gallery_Bot)\nThis bot was hosted on Heroku'
         )
     
     @bot.on(events.NewMessage(pattern="/batch"))
     async def event_handler_batch(event):
+        if event.chat_id < 0:
+            await event.reply("If you want to download in batch contact me in pm\n@Anime_Gallery_Robot")
+            return
         try:
-            data = event.raw_text[7:]
-            split_data = data.split(":")
+            text = event.raw_text.split()
+            text = text.pop(0)
+            anime_name = " ".join(text)
+            split_data = anime_name.split(":")
             if int(split_data[2]) - int(split_data[1]) > 15:
                 await event.reply(
                     "Batch Download is capped at 15 episodes due to performance issues\nPlease download in batches of less than 15 for now"
@@ -261,7 +269,7 @@ try:
         try:
             try:
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
@@ -269,7 +277,7 @@ try:
                 )
             except:
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     buttons=[Button.inline(
                         "Download", data=f"Download:{id}:{search_details.get('episodes')}")]
@@ -278,7 +286,7 @@ try:
         except:
             try:
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
@@ -286,7 +294,7 @@ try:
                 )
             except:
                 await bot.send_message(
-                    event.sender_id,
+                    event.chat_id,
                     f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {x}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
                     file=search_details.get('image_url'),
                     buttons=[Button.inline(
@@ -300,15 +308,15 @@ try:
             return False
         else:
             await bot.send_message(
-                event.sender_id,
+                event.chat_id,
                 f"Download Links for episode {ep_num}\n{result}"
             )
         return True
 
 except Exception as e:
     print(e)
-
-
+    print("Occured in anime section")
+                             
 bot.start()
 
 bot.run_until_disconnected()
