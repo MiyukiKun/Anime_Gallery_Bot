@@ -29,3 +29,19 @@ def format_download_results(download_results):
         result = f'{result}[{qualitys[i]}]({links[i]})\n'
 
     return result
+
+def batch_download_txt(name, list_of_links):
+    x = ''
+    for i in list_of_links:
+        y = i.get("(1080P-mp4)")
+        if y == None:
+            y = i.get("(720P-mp4)")
+            if y == None:
+                y = i.get("(480P-mp4)")
+                if y == None:
+                    y = i.get("(360P-mp4)")
+                    if y == None:
+                        y = ''
+        x = f"{x}{y}\n"
+    with open(f"{name}.txt", "w") as f:
+        f.write(f"{x}")
