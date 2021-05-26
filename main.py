@@ -8,7 +8,7 @@ api_id = os.environ.get('API_ID')
 api_hash = os.environ.get('API_HASH')
 bot_token = os.environ.get('BOT_TOKEN')
 
-bot = TelegramClient('bot1', api_id, api_hash).start(bot_token=bot_token)
+bot = TelegramClient('gallery_bot', api_id, api_hash).start(bot_token=bot_token)
 
 try:    # Anime Section
     
@@ -100,7 +100,7 @@ try:    # Anime Section
             return
         try:
             text = event.raw_text.split()
-            text = text.pop(0)
+            text.pop(0)
             anime_name = " ".join(text)
             split_data = anime_name.split(":")
             if int(split_data[2]) - int(split_data[1]) > 15:
@@ -115,6 +115,29 @@ try:    # Anime Section
 
         except:
             await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")
+
+    @bot.on(events.NewMessage(pattern="/download"))
+    async def event_handler_batch(event):
+        try:
+            text = event.raw_text.split()
+            text.pop(0)
+            anime_name = " ".join(text)
+            split_data = anime_name.split(":")
+            list_of_links = []
+            await event.reply("Be Patient this is a slow process....")
+            for i in range(int(split_data[1]), (int(split_data[2]) + 1)):
+                list_of_links.append(gogo.get_episodes_link(split_data[0], i))
+            format.batch_download_txt(split_data[0], list_of_links)
+            await bot.send_message(
+                event.chat_id,
+                "Import this file in **1DM** app.",
+                file= f"{split_data[0]}.txt"
+
+            )
+
+
+        except Exception as e:
+            print(e)
 
     @bot.on(events.CallbackQuery(pattern=b"lt:"))
     async def callback_for_latest(event):
@@ -315,8 +338,8 @@ try:    # Anime Section
 
 except Exception as e:
     print(e)
-    print("Occured in anime section")
-                             
+    print("occured in anime Section")
+
 bot.start()
 
 bot.run_until_disconnected()
