@@ -11,6 +11,10 @@
   "website": "https://github.com/MiyukiKun",
   "repository": "https://github.com/MiyukiKun/Anime_Gallery_Bot",
   "env": {
+    "WEBHOOK": {
+      "description": "Setting this to ANYTHING will enable webhooks when in env mode",
+      "value": "ANYTHING"
+    },
     "APP_ID": {
       "description": "Get this value from https://my.telegram.org",
       "value": ""
