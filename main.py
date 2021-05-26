@@ -1,14 +1,26 @@
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+logging.getLogger("pyrogram").setLevel(logging.WARNING)
+import os
+
+if bool(os.environ.get("WEBHOOK", False)):
+    from sample_config import Config
+else:
+    from config import Config
+
+import pyrogram
+
+
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
 import formating_results as format
 from helper import start_text, help_text
 import os
 
-api_id = os.environ.get('API_ID')
-api_hash = os.environ.get('API_HASH')
-bot_token = os.environ.get('BOT_TOKEN')
 
-bot = TelegramClient('gallery_bot', api_id, api_hash).start(bot_token=bot_token)
+bot = TelegramClient('gallery_bot', API_ID, API_HASH).start(BOT_TOKEN=bot_token)
 
 try:    # Anime Section
     
