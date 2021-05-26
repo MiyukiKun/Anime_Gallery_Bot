@@ -123,7 +123,6 @@ try:    # Anime Section
                 for i in range(int(split_data[1]), (int(split_data[2]) + 1)):
                     if await send_download_link(event, split_data[0], i) == False:
                         break
-
         except:
             await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")
 
