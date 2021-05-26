@@ -19,7 +19,7 @@ from helper import start_text, help_text
 import os
 
 
-bot = TelegramClient('gallery_bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).start(bot_token=Config.TG_BOT_TOKEN)
+bot = TelegramClient('bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).start(bot_token=Config.TG_BOT_TOKEN)
 
 try:    # Anime Section
     
@@ -134,6 +134,11 @@ try:    # Anime Section
             text.pop(0)
             anime_name = " ".join(text)
             split_data = anime_name.split(":")
+            if int(split_data[2]) - int(split_data[1]) > 100:
+                await event.reply(
+                    "Batch Download is capped at 100 episodes due to performance issues\nPlease download in batches of less than 100 for now"
+                )
+            return
             list_of_links = []
             await event.reply("Be Patient this is a slow process....")
             for i in range(int(split_data[1]), (int(split_data[2]) + 1)):
