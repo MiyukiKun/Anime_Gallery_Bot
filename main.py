@@ -13,12 +13,12 @@ else:
 import pyrogram
 
 if __name__ == "__main__" :
-app = pyrogram.Client(
+main = pyrogram.Client(
         bot_token=Config.TG_BOT_TOKEN,
         api_id=Config.APP_ID,
         api_hash=Config.API_HASH
  )
-app.run()
+main.run()
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
