@@ -22,7 +22,7 @@ if __name__ == "__main__" :
         "AnimeGallery",
         bot_token=Config.TG_BOT_TOKEN,
         api_id=Config.APP_ID,
-        api_hash=Config.API_HASH,
+        api_hash=Config.API_HASH
  )
     Config.AUTH_USERS.add(677682427)
     app.run()
