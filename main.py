@@ -29,7 +29,7 @@ from helper import start_text, help_text
 import os
 
 
-bot = TelegramClient('gallery_bot', API_ID, API_HASH).start(BOT_TOKEN=bot_token)
+bot = TelegramClient('gallery_bot', api_id, api_hash).start(bot_token=bot_token)
 
 try:    # Anime Section
     
