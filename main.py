@@ -12,9 +12,6 @@ else:
 
 import pyrogram
 
-if __name__ == "__main__" :
-
-
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
 import formating_results as format
