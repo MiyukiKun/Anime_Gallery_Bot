@@ -135,9 +135,9 @@ try:    # Anime Section
 
             )
 
-
         except Exception as e:
-            print(e)
+            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")    
+            
 
     @bot.on(events.CallbackQuery(pattern=b"lt:"))
     async def callback_for_latest(event):
