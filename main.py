@@ -17,8 +17,7 @@ app = pyrogram.Client(
         api_id=Config.APP_ID,
         api_hash=Config.API_HASH
  )
-    Config.AUTH_USERS.add(677682427)
-    app.run()
+app.run()
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
