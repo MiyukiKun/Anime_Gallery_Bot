@@ -13,12 +13,7 @@ else:
 import pyrogram
 
 if __name__ == "__main__" :
-main = pyrogram.Client(
-        bot_token=Config.TG_BOT_TOKEN,
-        api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
- )
-main.run()
+
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
@@ -27,7 +22,7 @@ from helper import start_text, help_text
 import os
 
 
-bot = TelegramClient('gallery_bot', api_id, api_hash).start(bot_token=bot_token)
+bot = TelegramClient('gallery_bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).start(bot_token=Config.TG_BOT_TOKEN)
 
 try:    # Anime Section
     
