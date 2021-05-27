@@ -32,7 +32,7 @@ try:    # Anime Section
     async def event_handler_start(event):
         await bot.send_message(
             event.chat_id,
-            start_text,
+            START_TEXT,
             file='https://tenor.com/view/luffy-hi-gif-19997876'
         )
 
