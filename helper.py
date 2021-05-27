@@ -1,4 +1,4 @@
-start_text = '''This bot is for downloading any anime direclty via links in multiple quality
+start_text = '''Hey! {} \nThis bot is for downloading any anime direclty via links in multiple quality
                 
 Use /help to know commands and how to use this bot'''
 
