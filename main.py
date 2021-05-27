@@ -27,34 +27,13 @@ bot = TelegramClient('bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).star
 
 try:    # Anime Section
   
-   @bot.on_message(pyrogram.filters.command(["start"]))
-    async def text(bot, update):
-      await update.reply_text(Helper.START_TEXT.format(update.from_user.first_name),
-        reply_markup=InlineKeyboardMarkup(
-              [
-                [
-                        InlineKeyboardButton("❗ Help", callback_data = "ghelp")
-                ],
-                [
-                    InlineKeyboardButton('Support Channel', url='https://t.me/Compass_Botz'),
-                    InlineKeyboardButton('Feedback', url='https://t.me/Dlaize')
-                ],
-                [
-                    InlineKeyboardButton('Anime Index', url='https://t.me/Cartoon_seriesz'),
-                    InlineKeyboardButton('Source', url='https://github.com/dakshkohli23/Sharingan-Rename-Bot')
-                ]
-            ]
-        ),
-        reply_to_message_id=update.message_id
-    )
-            return 
     
     @bot.on(events.NewMessage(pattern="/start"))
     async def event_handler_start(event):
         await bot.send_message(
             event.chat_id,
             start_text,
-            file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249'
+            file='https://tenor.com/view/luffy-hi-gif-19997876'
         )
 
     @bot.on(events.NewMessage(pattern="/help"))
