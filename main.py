@@ -19,7 +19,7 @@ else:
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
 import formating_results as format
-from helper import start_text, help_text
+from helper import START_TEXT, help_text
 import os
 
 
