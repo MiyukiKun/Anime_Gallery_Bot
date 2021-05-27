@@ -11,6 +11,10 @@ else:
     from config import Config
 
 import pyrogram
+from pyrogram import filters
+from pyrogram import Client as Anime
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
+from pyrogram.errors import UserNotParticipant, UserBannedInChannel
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
@@ -28,7 +32,14 @@ try:    # Anime Section
         await bot.send_message(
             event.chat_id,
             start_text,
-            file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249'
+            file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249',
+            reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton('Help!', callback_data = "help"),
+                ]
+            ]
+        )
         )
 
     @bot.on(events.NewMessage(pattern="/help"))
