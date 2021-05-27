@@ -2,7 +2,7 @@ start_text = '''Hey! {} \nThis bot is for downloading any anime direclty via lin
                 
 Use /help to know commands and how to use this bot'''
 
-help_text = '''<b>⚓ Help Centre</b> ⚓
+help_text = '''**⚓ Help Centre ⚓**
 /anime <name of anime you want> : to download any anime by search
 
 /latest : to get list of latest episodes released
