@@ -2,7 +2,7 @@ start_text = '''This bot is for downloading any anime direclty via links in mult
                 
 Use /help to know commands and how to use this bot'''
 
-help_text = '''⚓ Help Centre ⚓
+help_text = '''<b>⚓ Help Centre</b> ⚓
 /anime <name of anime you want> : to download any anime by search
 
 /latest : to get list of latest episodes released
