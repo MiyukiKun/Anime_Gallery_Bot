@@ -7,7 +7,6 @@ logging.getLogger("pyrogram").setLevel(logging.WARNING)
 import os
 import pyrogram
 from pyrogram import filters
-from pyrogram import Client as Anime
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
 from pyrogram.errors import UserNotParticipant, UserBannedInChannel
 
@@ -28,7 +27,7 @@ bot = TelegramClient('bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).star
 
 try:    # Anime Section
 
-@Anime.on_message(pyrogram.filters.command(["start"]))
+@bot.on_message(pyrogram.filters.command(["start"]))
 async def text(bot, update):
 
             await update.reply_text(Helper.START_TEXT.format(update.from_user.first_name),
