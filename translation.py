@@ -1,6 +1,6 @@
 class Translation(object):
 
-    START_TEXT = '''Hey! {} \nThis bot is for downloading any anime direclty via links in multiple quality. \
+    START_TEXT = '''Hey! {} \nThis bot is for downloading any anime direclty via links in multiple quality.
                 
 Use /help to know commands and how to use this bot'''
 
