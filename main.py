@@ -3,18 +3,19 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
+
 import os
+import pyrogram
+from pyrogram import filters
+from pyrogram import Client as Anime
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
+from pyrogram.errors import UserNotParticipant, UserBannedInChannel
 
 if bool(os.environ.get("WEBHOOK", False)):
     from sample_config import Config
 else:
     from config import Config
 
-import pyrogram
-from pyrogram import filters
-from pyrogram import Client as Anime
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
-from pyrogram.errors import UserNotParticipant, UserBannedInChannel
 
 from telethon import TelegramClient, events, Button
 from gogoanimeapi import gogoanime as gogo
@@ -26,20 +27,36 @@ import os
 bot = TelegramClient('bot', api_id=Config.APP_ID, api_hash=Config.API_HASH).start(bot_token=Config.TG_BOT_TOKEN)
 
 try:    # Anime Section
+
+@Anime.on_message(pyrogram.filters.command(["start"]))
+async def text(bot, update):
+
+            await update.reply_text(Helper.START_TEXT.format(update.from_user.first_name),
+        reply_markup=InlineKeyboardMarkup(
+              [
+                [
+                        InlineKeyboardButton("❗ Help", callback_data = "ghelp")
+                ],
+                [
+                    InlineKeyboardButton('Support Channel', url='https://t.me/Compass_Botz'),
+                    InlineKeyboardButton('Feedback', url='https://t.me/Dlaize')
+                ],
+                [
+                    InlineKeyboardButton('Anime Index', url='https://t.me/Cartoon_seriesz'),
+                    InlineKeyboardButton('Source', url='https://github.com/dakshkohli23/Sharingan-Rename-Bot')
+                ]
+            ]
+        ),
+        reply_to_message_id=update.message_id
+    )
+     return 
     
     @bot.on(events.NewMessage(pattern="/start"))
     async def event_handler_start(event):
         await bot.send_message(
             event.chat_id,
             start_text,
-            file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249',
-            reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton('Help!', callback_data = "help"),
-                ]
-            ]
-        )
+            file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249'
         )
 
     @bot.on(events.NewMessage(pattern="/help"))
