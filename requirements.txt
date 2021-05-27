@@ -3,3 +3,6 @@ requests_html
 requests
 bs4
 pyrogram==1.0.7
+aiohttp
+beautifulsoup4
+requests
