@@ -11,8 +11,12 @@ help_text = '''List of commands:
 
 /download : same as batch download but you get 1 file you can import in **1DM** (here the highest possible resolution is provided so if you want to choose resolution use old batch command)
 
+/manga <name of manga you want> : Get information mainly manga id here
+
+/read <copy this command from the manga infromation and add chapter number> : Open provided file in chrome to read
+
 /source : You can see the source code and more information of the bot if u want
-                
+ 
                 
 The links provided are in multiple qualities to download just open links in chrome and download starts automatically
                 
