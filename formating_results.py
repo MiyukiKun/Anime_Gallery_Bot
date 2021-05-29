@@ -45,3 +45,15 @@ def batch_download_txt(name, list_of_links):
         x = f"{x}{y}\n"
     with open(f"{name}.txt", "w") as f:
         f.write(f"{x}")
+
+def manga_chapter_html(name, list_of_links):
+    x = '''<div class="slideshow-container" style="background-color:black">'''
+    for i in list_of_links:
+        x = f'''{x}
+    <div class="mySlides fade">
+      <img src="{i}" style="width:100%"><br>
+      <br>
+    </div>
+        '''
+    with open(f"{name}.html", "w") as f:
+        f.write(x)
