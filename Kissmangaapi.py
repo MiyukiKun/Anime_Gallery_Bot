@@ -42,8 +42,8 @@ class kissmangaapi():
             genres = soup.find("p", class_="description-update").findAll("a")
             for genre in genres:
                 genre_list.append(genre.text)
-            latest_chap = soup.find("a", class_="xanh")
-            latest_chapter = latest_chap["title"]
+            latest_chap = soup.find("div", class_="total-chapter").find("a")
+            latest_chapter = latest_chap.text
             latest_chapter_split = latest_chapter.split(' ')
             last_chapter = latest_chapter_split[-1]
             return [manga_title.text, image_link, genre_list[:-2], last_chapter]
