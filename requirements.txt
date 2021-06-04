@@ -1,0 +1,4 @@
+telethon
+requests_html
+requests
+bs4
