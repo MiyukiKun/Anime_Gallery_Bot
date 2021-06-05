@@ -4,7 +4,7 @@ from telethon import events
 
 class start():
 
-    @bot.on(events.NewMessage(pattern="/start"))
+    @bot.on(events.NewMessage(pattern=r"^/start$|^/start@Anime_Gallery_Robot"))
     async def event_handler_start(event):
         await bot.send_message(
             event.chat_id,
@@ -12,7 +12,7 @@ class start():
             file='https://tenor.com/view/chika-fujiwara-kaguya-sama-love-is-war-anime-wink-smile-gif-18043249'
         )
 
-    @bot.on(events.NewMessage(pattern="/help"))
+    @bot.on(events.NewMessage(pattern=r"^/help$|^/help@Anime_Gallery_Robot"))
     async def event_handler_help(event):
         await bot.send_message(
             event.chat_id,
