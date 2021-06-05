@@ -23,7 +23,7 @@ class Anime():
             buttons=buttonss
             )
 
-    @bot.on(events.NewMessage(pattern="/anime"))
+    @bot.on(events.NewMessage(pattern=r"^/anime$|^/anime@Anime_Gallery_Robot"))
     async def event_handler_anime(event):
         if '/anime' == event.raw_text:
             await bot.send_message(
