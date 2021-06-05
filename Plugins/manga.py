@@ -6,7 +6,7 @@ from Helper.helper_functions import *
 
 class Manga():
 
-    @bot.on(events.NewMessage(pattern="/manga"))
+    @bot.on(events.NewMessage(pattern=r"^/manga$|^/manga@Anime_Gallery_Robot"))
     async def event_handler_manga(event):
         if '/manga' == event.raw_text:
             await bot.send_message(
