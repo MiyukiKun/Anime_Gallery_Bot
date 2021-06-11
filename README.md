@@ -68,7 +68,7 @@ Easier to contact me there than through github
 
 #### Q1. How can i make my own bot?
 
-Ans. U can deploy to heroku manually by forking and adding env vars manually, i will add app.json soon so you can use the direct deploy methord 
+Ans. U can deploy to heroku manually by forking and adding env vars manually, i will add app.json soon so you can use the direct deploy method 
 
 #### Q2. How to use the bot?
 
