@@ -13,7 +13,7 @@
     "website": "https://github.com/MiyukiKun",
     "repository": "https://github.com/MiyukiKun/Anime_Gallery_Bot",
     "env": {
-      "APP_ID": {
+      "API_ID": {
         "description": "Get this value from https://my.telegram.org",
         "value": ""
       },
@@ -26,14 +26,6 @@
         "value": ""
       }
     },
-    "addons": [
-      {
-      "plan": "heroku-postgresql",
-        "options": {
-          "version": "12"
-        }
-      }
-    ],
     "buildpacks": [{
       "url": "heroku/python"
     }],
