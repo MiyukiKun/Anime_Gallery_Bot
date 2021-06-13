@@ -1,0 +1,46 @@
+{
+    "name": "Anime Gallery Bot",
+    "description": "Telegram Bot is for downloading any anime direclty via links in multiple quality",
+    "keywords": [
+      "telegram",
+      "best",
+      "anime download",
+      "anime",
+      "manga",
+      "manga download"
+    ],
+    "success_url": "https://t.me/Anime_Gallery_Robot",
+    "website": "https://github.com/MiyukiKun",
+    "repository": "https://github.com/MiyukiKun/Anime_Gallery_Bot",
+    "env": {
+      "APP_ID": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+      "API_HASH": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+       "TG_BOT_TOKEN": {
+        "description": "Your bot token, as a string. Get it from @BotFather on telegram",
+        "value": ""
+      }
+    },
+    "addons": [
+      {
+      "plan": "heroku-postgresql",
+        "options": {
+          "version": "12"
+        }
+      }
+    ],
+    "buildpacks": [{
+      "url": "heroku/python"
+    }],
+    "formation": {
+      "worker": {
+        "quantity": 1,
+        "size": "free"
+      }
+    }
+  }
