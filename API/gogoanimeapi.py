@@ -137,7 +137,7 @@ class gogoanime():
         except requests.exceptions.ConnectionError:
             return {"status":"404", "reason":"Check the host's network Connection"}
     
-     def jugad(animeid, episode_num):
+    def jugad(animeid, episode_num):
         url = f"https://www1.gogoanime.ai/{animeid}-episode-{episode_num}"
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
