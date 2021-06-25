@@ -57,6 +57,8 @@ async def send_details(event, id):
             
 async def send_download_link(event, id, ep_num):
     links = gogo.jugad(animeid=id, episode_num=ep_num)
+    print("HI")
+    print(links)
     result = format.format_download_results(links)
     if "status" in result:
         return False
