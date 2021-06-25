@@ -56,6 +56,7 @@ async def send_details(event, id):
             )
             
 async def send_download_link(event, id, ep_num):
+    print("ok")
     links = gogo.jugad(animeid=id, episode_num=ep_num)
     print("HI")
     print(links)
