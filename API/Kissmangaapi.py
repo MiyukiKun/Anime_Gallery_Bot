@@ -65,3 +65,24 @@ class kissmangaapi():
             return "Invalid Mangaid or chapter number"
         except requests.exceptions.ConnectionError:
             return "Check the host's network Connection"
+        
+    def jugad(animeid, episode_num):
+        url = f"https://www1.gogoanime.ai/{animeid}-episode-{episode_num}"
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+        response = requests.get(url, headers=headers)
+        plainText = response.text
+        with open("test.html", "w", encoding="utf-8") as f:
+            f.write(plainText)
+        soup = BeautifulSoup(plainText, "lxml")
+        links = soup.find("div", {"class":"anime_muti_link"}).find_all("li")
+        result = {}
+        for link in links:
+            server = link.text
+            server = server.replace("Choose this server", "")
+            server = server.replace("\n", "")
+            ep_url = link.a["data-video"]
+            if ep_url.startswith("//"):
+                ep_url = ep_url[2:]
+            result[server] = ep_url
+        return result
