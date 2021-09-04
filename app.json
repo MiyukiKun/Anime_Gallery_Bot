@@ -21,7 +21,7 @@
         "description": "Get this value from https://my.telegram.org",
         "value": ""
       },
-       "TG_BOT_TOKEN": {
+       "BOT_TOKEN": {
         "description": "Your bot token, as a string. Get it from @BotFather on telegram",
         "value": ""
       }
