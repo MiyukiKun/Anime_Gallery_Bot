@@ -2,7 +2,7 @@
 # Anime Gallery Robot
 
 <p align="center">
-  <img src="https://telegra.ph/file/59587a1cbf5047d72a807.jpg">
+  <img src="https://images6.alphacoders.com/911/911401.jpg">
 </p>
 
 A Bot which uses unofficial gogoanime and kissmanga api to search and provide anime and manga respectively to the user.  
