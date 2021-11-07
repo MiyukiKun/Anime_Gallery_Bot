@@ -10,7 +10,7 @@ class gogoanime():
 
     def get_search_results(query):
         try:
-            url1 = f"https://gogoanime.ai//search.html?keyword={query}"
+            url1 = f"https://gogoanime.cm//search.html?keyword={query}"
             session = HTMLSession()
             response = session.get(url1)
             response_html = response.text
@@ -31,7 +31,7 @@ class gogoanime():
 
     def get_anime_details(animeid):
         try:
-            animelink = 'https://gogoanime.ai/category/{}'.format(animeid)
+            animelink = 'https://gogoanime.cm/category/{}'.format(animeid)
             response = requests.get(animelink)
             plainText = response.text
             soup = BeautifulSoup(plainText, "lxml")
