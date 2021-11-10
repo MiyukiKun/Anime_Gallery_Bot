@@ -47,8 +47,8 @@ class gogoanime():
             type_of_show = lis[0].a['title']
             ai = lis[2].find_all('a')
             genres = []
-            for link in ai:
-                genres.append(link.get('title'))
+#             for link in ai:
+#                 genres.append(link.get('title'))
             year1 = lis[3].get_text()
             year2 = year1.split(" ")
             year = year2[1]
