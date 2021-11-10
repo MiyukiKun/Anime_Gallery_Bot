@@ -15,11 +15,11 @@ async def send_details(event, id):
     search_details = gogo.get_anime_details(id)
     genre = search_details.get('genre')
     x = ''
-    for i in genre:
-        if i == "'" or i == "[" or i == "]":
-            pass
-        else:
-            x = f'{x}{i}'
+#     for i in genre:
+#         if i == "'" or i == "[" or i == "]":
+#             pass
+#         else:
+#             x = f'{x}{i}'
     await event.edit('Search Results:')
     try:
         try:
