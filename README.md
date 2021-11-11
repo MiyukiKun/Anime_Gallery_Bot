@@ -1,6 +1,8 @@
 
 # Anime Gallery Robot
 
+# THIS GOGO API IS NOW BROKEN FEEL FREE TO FORK AND FIX IT YOURSELF, I AM DROPPING THIS PROJECT AND FOCUSING ON OTHER BOTS
+
 <p align="center">
   <img src="https://images6.alphacoders.com/911/911401.jpg">
 </p>
@@ -8,7 +10,7 @@
 A Bot which uses unofficial gogoanime and kissmanga api to search and provide anime and manga respectively to the user.  
  <p align='center'>
   <a href="https://www.python.org/" alt="made-with-python"> <img src="https://img.shields.io/badge/Made%20with-Python-00ead3.svg?style=flat-square&logo=python&logoColor=00ead3&color=00ead3" /> </a>
-  <a href="https://github.com/MiyukiKun/Anime_Gallery_Bot/" alt="Maintenance"> <img src="https://img.shields.io/badge/Maintained%3F-Yes-green.svg?style=flat-square&logo=serverless&logoColor=00ead3&color=00ead3" /> </a>
+  <a href="https://github.com/MiyukiKun/Anime_Gallery_Bot/" alt="Maintenance"> <img src="https://img.shields.io/badge/Maintained%3F-No-green.svg?style=flat-square&logo=serverless&logoColor=00ead3&color=00ead3" /> </a>
 </p>
 
 # Table of Content
