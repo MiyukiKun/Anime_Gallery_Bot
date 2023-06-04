@@ -1,13 +1,21 @@
 from telethon import events, Button
-from API.gogoanimeapi import gogoanime as gogo
 import Helper.formating_results as format
-from config import bot
+from config import bot, bot_username
 from Helper.helper_functions import *
+from database import ConfigDB
+
+cdb = ConfigDB()
 
 class Anime():
 
     @bot.on(events.NewMessage(pattern="/latest"))
     async def event_handler_latest(event):
+        data = cdb.find({"_id":"GogoAnime"})
+        gogo = Gogo(
+            gogoanime_token=data["gogoanime"],
+            auth_token=data["auth"],
+            host=data["url"]
+        )
         home_page = gogo.get_home_page()
         (names, ids, epnums) = format.format_home_results(home_page)
         buttonss = []
@@ -23,8 +31,14 @@ class Anime():
             buttons=buttonss
             )
 
-    @bot.on(events.NewMessage(pattern=r"^/anime|^/anime@Anime_Gallery_Robot"))
+    @bot.on(events.NewMessage(pattern=fr"^/anime|^/anime@{bot_username}"))
     async def event_handler_anime(event):
+        data = cdb.find({"_id":"GogoAnime"})
+        gogo = Gogo(
+            gogoanime_token=data["gogoanime"],
+            auth_token=data["auth"],
+            host=data["url"]
+        )
         if '/anime' == event.raw_text:
             await bot.send_message(
                 event.chat_id,
@@ -58,7 +72,8 @@ class Anime():
                     event.chat_id,
                     'Search Results:',
                     buttons=buttons1)
-            except:
+            except Exception as e:
+                print(e)
                 await bot.send_message(
                     event.chat_id,
                     'Not Found, Check for Typos or search Japanese name',
@@ -86,10 +101,16 @@ class Anime():
                         break
 
         except:
-            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")
+            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help if you have any doubts")
 
     @bot.on(events.NewMessage(pattern="/download"))
     async def event_handler_batch(event):
+        data = cdb.find({"_id":"GogoAnime"})
+        gogo = Gogo(
+            gogoanime_token=data["gogoanime"],
+            auth_token=data["auth"],
+            host=data["url"]
+        )
         try:
             text = event.raw_text.split()
             text.pop(0)
@@ -113,7 +134,7 @@ class Anime():
             )
 
         except:
-            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help or go to \n@Anime_Gallery_Robot_Support if you have any doubts")         
+            await event.reply("Something went wrong.....\nCheck if you entered command properly\n\nUse /help if you have any doubts")         
 
     @bot.on(events.CallbackQuery(pattern=b"lt:"))
     async def callback_for_latest(event):
@@ -157,6 +178,12 @@ class Anime():
 
     @bot.on(events.CallbackQuery(pattern=b"longdl"))
     async def callback_for_download_long(event):
+        data = cdb.find({"_id":"GogoAnime"})
+        gogo = Gogo(
+            gogoanime_token=data["gogoanime"],
+            auth_token=data["auth"],
+            host=data["url"]
+        )
         data = event.data.decode('utf-8')
         x = data.split(":")
         button2 = [[]]
@@ -225,6 +252,12 @@ class Anime():
 
     @bot.on(events.CallbackQuery(pattern=b"spp:"))
     async def callback_for_downlink_long(event):
+        data = cdb.find({"_id":"GogoAnime"})
+        gogo = Gogo(
+            gogoanime_token=data["gogoanime"],
+            auth_token=data["auth"],
+            host=data["url"]
+        )
         data = event.data.decode('utf-8')
         x = data.split(":")
         search_results = gogo.get_search_results(x[3])

@@ -2,3 +2,6 @@ telethon
 requests_html
 requests
 bs4
+python-dotenv
+pymongo
+dnspython

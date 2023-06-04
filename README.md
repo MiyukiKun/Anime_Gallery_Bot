@@ -1,8 +1,6 @@
 
 # Anime Gallery Robot
 
-# THIS GOGO API IS NOW BROKEN FEEL FREE TO FORK AND FIX IT YOURSELF, I AM DROPPING THIS PROJECT AND FOCUSING ON OTHER BOTS
-
 <p align="center">
   <img src="https://images6.alphacoders.com/911/911401.jpg">
 </p>

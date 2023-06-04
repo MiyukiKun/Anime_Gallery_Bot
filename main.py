@@ -1,17 +1,23 @@
-from Plugins.starter import start
+from Plugins.starter import Start
 from Plugins.anime import Anime
 from Plugins.manga import Manga
-from Plugins.nhentai import Nhentai
+from Plugins.admin import Admin
 from config import bot
+import traceback
+
+start = Start()
+anime = Anime()
+manga = Manga()
+admin = Admin()
 
 try:
-    start()
-    Anime()
-    Manga()
-    Nhentai()
-    
-except Exception as e:
-    print(e)
+    start
+    anime
+    manga
+    admin
+except:
+    err_str = traceback.format_exc()
+    print(err_str)
 
 bot.start()
 
