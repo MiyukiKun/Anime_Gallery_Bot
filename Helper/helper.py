@@ -14,6 +14,10 @@ help_text = '''List of commands:
 /manga <name of manga you want> : to read any manga by search
 
 /read <mangaid>:<ch num> : to read chapter
+
+/read_pdf <mangaid>:<ch num> : to export chapter as pdf
+
+/read_batch <mangaid>:<from chapter>:<to chapter> : For getting chapters in bulk
                 
 The **Download** links provided are in multiple qualities to download just open links in chrome and download starts automatically
 I suggest open the links in **1DM** app on playstore instead of chrome for easy downloading

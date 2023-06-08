@@ -1,3 +1,6 @@
+import pdfkit
+
+
 def format_search_results(search_results):
     names = []
     ids = []
@@ -58,3 +61,7 @@ def manga_chapter_html(name, list_of_links):
     with open(f"{name}.html", "w") as f:
         f.write(x)
     return f"{name}.html"
+
+def manga_chapter_pdf(name, list_of_links):
+    pdfkit.from_url(list_of_links, name)
+    return f"{name}"
