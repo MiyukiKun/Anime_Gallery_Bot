@@ -1,6 +1,3 @@
-import pdfkit
-
-
 def format_search_results(search_results):
     names = []
     ids = []
