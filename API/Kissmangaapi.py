@@ -52,7 +52,7 @@ class kissmangaapi():
 
     def get_manga_chapter(mangaid, chapternum):  # returns list of image links of pages of full chapter [imglink1, imglink2, full chapter]
         try:
-            url = f"https://hubmanga.com/read/{mangaid}-chapter-{chapternum}"
+            url = f"https://mangapure.net/manga/{mangaid}-chapter-{chapternum}"
             response = requests.get(url)
             response_html = response.text
             soup = BeautifulSoup(response_html, 'lxml')
