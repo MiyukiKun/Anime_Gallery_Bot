@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 class Gogo:
     def __init__(self, gogoanime_token: str, auth_token: str, host: str):
         self.gogoanime_token = gogoanime_token
@@ -81,6 +80,7 @@ class Gogo:
    
     def get_episodes_link(self, animeid, episode_num):
         try:
+            animeid = animeid.replace("-tv", "")
             url = f'https://www.{self.host}/{animeid}-episode-{episode_num}'
             cookies = {
                 'gogoanime': self.gogoanime_token,
@@ -122,6 +122,7 @@ class Gogo:
         
     def get_stream_link(self, animeid, episode_num):
         try:
+            animeid = animeid.replace("-tv", "")
             url = f"https://www.{self.host}/{animeid}-episode-{episode_num}"
             headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
