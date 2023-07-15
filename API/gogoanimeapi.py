@@ -139,7 +139,6 @@ class Gogo:
         
     def get_stream_link(self, animeid, episode_num):
         try:
-            animeid = animeid.replace("-tv", "")
             url = f"https://www.{self.host}/{animeid}-episode-{episode_num}"
             headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
@@ -158,6 +157,26 @@ class Gogo:
                 result[server] = ep_url
             return result
         except AttributeError:
-            return {"status":"400", "reason":"Invalid animeid"}
+            try:
+                animeid = animeid.replace("-tv", "")
+                url = f"https://www.{self.host}/{animeid}-episode-{episode_num}"
+                headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+                response = requests.get(url, headers=headers)
+                plainText = response.text
+                soup = BeautifulSoup(plainText, "lxml")
+                links = soup.find("div", {"class":"anime_muti_link"}).find_all("li")
+                result = {}
+                for link in links:
+                    server = link.text
+                    server = server.replace("Choose this server", "")
+                    server = server.replace("\n", "")
+                    ep_url = link.a["data-video"]
+                    if ep_url.startswith("//"):
+                        ep_url = ep_url[2:]
+                    result[server] = ep_url
+                return result
+            except:
+                return {"status":"400", "reason":"Invalid animeid"}
         except requests.exceptions.ConnectionError:
             return {"status":"404", "reason":"Check the host's network Connection"}
