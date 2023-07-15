@@ -16,7 +16,7 @@ class Gogo:
             animes = soup.find("ul", {"class": "items"}).find_all("li")
             res_list_search = []
             for anime in animes:  
-                tit = anime.a["title"]
+                tit = anime.text.strip().split("\n")[0]
                 urll = anime.a["href"]
                 r = urll.split('/')
                 res_list_search.append({"title":tit, "animeid":r[2]})
@@ -80,7 +80,6 @@ class Gogo:
    
     def get_episodes_link(self, animeid, episode_num):
         try:
-            animeid = animeid.replace("-tv", "")
             url = f'https://www.{self.host}/{animeid}-episode-{episode_num}'
             cookies = {
                 'gogoanime': self.gogoanime_token,
@@ -97,7 +96,25 @@ class Gogo:
                 result[quality_name] = download_link
             return result
         except AttributeError:
-            return {"status":"400", "reason":"Invalid animeid or episode_num"}
+            try:
+                animeid = animeid.replace("-tv", "")
+                url = f'https://www.{self.host}/{animeid}-episode-{episode_num}'
+                cookies = {
+                    'gogoanime': self.gogoanime_token,
+                    'auth': self.auth_token
+                }
+                response = requests.get(url=url, cookies=cookies)
+                plaintext = response.text
+                soup = BeautifulSoup(plaintext, "lxml")
+                download_div = soup.find("div", {'class': 'cf-download'}).findAll('a')
+                result = {}  
+                for links in download_div:
+                    download_link = links['href']
+                    quality_name = links.text.strip().split('x')[1]
+                    result[quality_name] = download_link
+                return result
+            except:
+                return {"status":"400", "reason":"Invalid animeid or episode_num"}
         except requests.exceptions.ConnectionError:
             return {"status":"404", "reason":"Check the host's network Connection"}            
 
