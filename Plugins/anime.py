@@ -54,7 +54,7 @@ class Anime():
                 (names, ids) = format.format_search_results(search_result)
                 buttons1 = []
                 for i in range(len(names)):
-                    if len(names[i]) > 55:
+                    if len(names[i]) > 45:
                         try:
                             buttons1.append([Button.inline(
                                 f"{names[i][:22]}. . .{names[i][-22:]}", data=f"split:{anime_name}:{ids[i][-25:]}")])
@@ -73,7 +73,6 @@ class Anime():
                     'Search Results:',
                     buttons=buttons1)
             except Exception as e:
-                print(e)
                 await bot.send_message(
                     event.chat_id,
                     'Not Found, Check for Typos or search Japanese name',
@@ -201,7 +200,6 @@ class Anime():
                 button2.append([])
                 current_row = current_row + 1
         await event.edit(
-            f'Choose Episode:',
             buttons=button2
         )
 

@@ -29,7 +29,7 @@ async def send_details(event, id):
         await bot.send_message(
             event.chat_id,
             f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {genre}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
-            file=search_details.get('image_url', None),
+            file=search_details.get('image_url', None).replace(" ", '%20'),
             buttons=[Button.inline(
                 "Download", data=f"Download:{id}:{search_details.get('episodes')}")]
         )
@@ -38,7 +38,7 @@ async def send_details(event, id):
         await bot.send_message(
             event.chat_id,
             f"{search_details.get('title')}\nYear: {search_details.get('year')}\nStatus: {search_details.get('status')}\nGenre: {genre}\nEpisodes: {search_details.get('episodes')}\nAnimeId: `{id}`",
-            file=search_details.get('image_url', None),
+            file=search_details.get('image_url', None).replace(" ", '%20'),
             buttons=[Button.inline(
                 "Download", data=f"longdl:{split_id[1]}:{id[-25:]}:{search_details.get('episodes')}")]
         )
